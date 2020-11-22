@@ -54,19 +54,21 @@ public class Zones {
         List<String> Countries = new ArrayList<>();
         List<WebElement> subListElement = new ArrayList<>();
         String zone;
-        String[] Zons;
+        List<String> Zones = new ArrayList<>();
+
         for (int i = 0; i < ListElement.size(); i++) {
             Countries.add(ListElement.get(i).findElement(By.cssSelector("a")).getAttribute("textContent"));
                 ListElement.get(i).findElement(By.cssSelector("a")).click();
                 Thread.sleep(500);
-                ListElement = driver.findElements(By.cssSelector("#table-zones tr"));
-                for (int j = 1; j < ListElement.size()-1; j++) {
-                    Zons = ListElement.get(j).findElement(By.cssSelector("td:nth-child(3)")).getAttribute("textContent").split("\n ");
-                    if (SortArray(Zons))
-                    {
-                        System.out.println("У "+Countries.get(i) + " зоны отсортированы");
-                    }
+                Zones.clear();
+                subListElement = driver.findElements(By.cssSelector("#table-zones tr td:nth-child(3) select option[selected]"));
+                for (int j = 0; j < subListElement.size(); j++) {
+                    Zones.add(subListElement.get(j).getAttribute("textContent"));
                 }
+            if (SortArray(Zones))
+            {
+                System.out.println("У "+Countries.get(i) + " зоны отсортированы");
+            }
                 driver.get("http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones");
                 Thread.sleep(500);
                 ListElement = driver.findElements(By.className("row"));
